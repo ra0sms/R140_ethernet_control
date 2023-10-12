@@ -277,45 +277,6 @@ void BuildStartPage (char* buf){
 
 }
 
-void BuildSwitchPage (char* buf){
-	char webPage1[]="<!DOCTYPE HTML> <html> <head> <title>Ethernet Remote Console</title>"
-			"<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">"
-			"<style type=\"text/css\">"
-			".btn {background-color: #4CAF50; border: none; color: white; padding: 8px 16px; text-align: center; text-decoration: none; display: inline-block; font-size: 12px; margin: 1px 2px; -webkit-transition-duration: 0.4s; transition-duration: 0.4s; cursor: pointer;}"
-			".btn-on {background-color: white; color: black; border: 2px solid #4CAF50;}"
-			".btn-off {background-color: white; color: black; border: 2px solid #f44336;}"
-			".btn-on:active {background: green;}"
-			".btn-off:active {background: red;}"
-			"</style> </head>";
-
-	char webPage2[]="<body bgcolor=\"#c7daed\">"
-			"<BODY onload='process()'>"
-			"<p><font color=\"red\" face=\"Arial\"><h2> OUT - <A id='runtime'> </A></font></h2></p>"
-			"</BODY>"
-			"<p><h3><a href=\"socket0On\"><button class=\"btn btn-on\">ON</button></a>&nbsp; A1<br>"
-			"<p><a href=\"socket1On\"><button class=\"btn btn-on\">ON</button></a>&nbsp; A2<br>"
-			"<p><a href=\"socket2On\"><button class=\"btn btn-on\">ON</button></a>&nbsp; A3<br>"
-		    "<p><a href=\"socket3On\"><button class=\"btn btn-on\">ON</button></a>&nbsp; A4<br>"
-			"<p><a href=\"socket4On\"><button class=\"btn btn-on\">ON</button></a>&nbsp; A5<br>"
-			"<p><a href=\"socket5On\"><button class=\"btn btn-on\">ON</button></a>&nbsp; A6<br>"
-			"<p><a href=\"socket6On\"><button class=\"btn btn-on\">ON</button></a>&nbsp; A7<br>"
-			"<p><a href=\"socket7On\"><button class=\"btn btn-on\">ON</button></a>&nbsp; A8</h3></p>"
-			"<p><a href=\"socket7Off\"><button class=\"btn btn-off\">OFF</button></a></h3></p>"
-			"<p><a href ='/'>Return to the home page</a></p>";
-
-			strcpy(buf,(char *)webPage1);
-			strcat(buf, (char *)javaScript);
-			strcat(buf, (char *)webPage2);
-
-}
-
-void buildXML(char* buf) {
-	strcpy(buf, (char *)post_url);
-	/*strcpy(buf,"<?xml version='1.0'?>");
-	strcat(buf,"<response> A1 </response>");*/
-}
-
-
 
 /* USER CODE END PTD */
 
@@ -388,10 +349,8 @@ int32_t loopback_tcps(uint8_t sn, char *buf, uint16_t port) {
 			if (memcmp(buf, "GET ", 4) == 0) {
 				url = buf + 4;
 
-				if (memcmp(url, "/xml", 4) == 0) {
-					buildXML(buf);
-				} else if (memcmp(url, "/switch", 7) == 0) {
-					BuildSwitchPage(buf);
+				if (memcmp(url, "/status", 7) == 0) {
+					strcpy(buf, (char *)post_url);
 				} else if ((memcmp(url, "/ H", 3) == 0)) {
 					BuildStartPage(buf);
 				} else if (memcmp(url, "/AM1", 4) == 0) {
@@ -399,7 +358,6 @@ int32_t loopback_tcps(uint8_t sn, char *buf, uint16_t port) {
 					strncpy(post_url, (char *)get_url,19);
 					Set_outputs(get_url);
 					BuildStartPage(buf);
-					//USART1_Send_String(get_url);
 				}else
 
 				{
