@@ -30,6 +30,8 @@
 #include "dhcp.h"
 #include "dns.h"
 
+#define EEPROM_ADRESS_START 0x08030000
+
 char str_rx2[25];
 char flag_ok = 0;
 uint8_t out1[8];
@@ -422,6 +424,28 @@ void USART1_Send_String (char* str){
 	USART1_Send (str[i++]);
 }
 
+void WriteToEEPROM (uint32_t address, wiz_NetInfo value)
+{
+     HAL_FLASH_Unlock();
+     __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_EOP | FLASH_FLAG_OPERR | FLASH_FLAG_WRPERR | FLASH_FLAG_PGAERR | FLASH_FLAG_PGSERR );
+     FLASH_Erase_Sector(FLASH_SECTOR_5, VOLTAGE_RANGE_3);
+     HAL_FLASH_Program(TYPEPROGRAM_WORD, address, value.ip[0]);
+     HAL_FLASH_Program(TYPEPROGRAM_WORD, address+4, value.ip[1]);
+     HAL_FLASH_Program(TYPEPROGRAM_WORD, address+8, value.ip[2]);
+     HAL_FLASH_Program(TYPEPROGRAM_WORD, address+12, value.ip[3]);
+     HAL_FLASH_Program(TYPEPROGRAM_WORD, address+16, value.gw[0]);
+     HAL_FLASH_Program(TYPEPROGRAM_WORD, address+20, value.gw[1]);
+     HAL_FLASH_Program(TYPEPROGRAM_WORD, address+24, value.gw[2]);
+     HAL_FLASH_Program(TYPEPROGRAM_WORD, address+28, value.gw[3]);
+
+     HAL_FLASH_Lock();
+}
+
+uint32_t ReadFromEEPROM (uint32_t address)
+{
+  return (*(__IO uint32_t *)address);
+}
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -478,6 +502,19 @@ int main(void)
 	uint8_t rx_tx_buff_sizes[] = { 2, 2, 2, 2, 2, 2, 2, 2 };
 
 	wizchip_init(rx_tx_buff_sizes, rx_tx_buff_sizes);
+
+	//WriteToEEPROM(EEPROM_ADRESS_START, gWIZNETINFO);
+
+	gWIZNETINFO.ip[0] = ReadFromEEPROM(EEPROM_ADRESS_START);
+	gWIZNETINFO.ip[1] = ReadFromEEPROM(EEPROM_ADRESS_START+4);
+	gWIZNETINFO.ip[2] = ReadFromEEPROM(EEPROM_ADRESS_START+8);
+	gWIZNETINFO.ip[3] = ReadFromEEPROM(EEPROM_ADRESS_START+12);
+
+	gWIZNETINFO.gw[0] = ReadFromEEPROM(EEPROM_ADRESS_START+16);
+	gWIZNETINFO.gw[1] = ReadFromEEPROM(EEPROM_ADRESS_START+20);
+	gWIZNETINFO.gw[2] = ReadFromEEPROM(EEPROM_ADRESS_START+24);
+	gWIZNETINFO.gw[3] = ReadFromEEPROM(EEPROM_ADRESS_START+28);
+
 
 	wizchip_setnetinfo(&gWIZNETINFO);
 
