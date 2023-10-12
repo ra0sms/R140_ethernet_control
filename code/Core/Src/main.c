@@ -26,6 +26,7 @@
 #include <stdarg.h>
 #include <stdbool.h>
 #include <ctype.h>
+#include <stdlib.h>
 #include "socket.h"
 #include "dhcp.h"
 #include "dns.h"
@@ -40,6 +41,14 @@ char *get_url;
 char post_url[25];
 uint8_t flag_usb = 0;
 uint8_t flag_ethernet = 0;
+char ip1 = 0;
+char ip2 = 0;
+char ip3 = 0;
+char ip4 = 0;
+char gw1 = 0;
+char gw2 = 0;
+char gw3 = 0;
+char gw4 = 0;
 
 
 void USART1_Send (char chr);
@@ -228,9 +237,9 @@ uint8_t CDC_Transmit_FS(uint8_t* Buf, uint16_t Len);
 char gDATABUF[DATA_BUF_SIZE];
 
 wiz_NetInfo gWIZNETINFO = { .mac = {0x00, 0x08, 0xdc, 0xab, 0xcd, 0xef},
-                            .ip = {192, 168, 0, 230},
-                            .sn = {255, 255, 255, 0},
-                            .gw = {192, 168, 0, 1},
+                            .ip = {192, 168, 000, 230},
+                            .sn = {255, 255, 255, 000},
+                            .gw = {192, 168, 000, 001},
                             .dns = {8, 8, 8, 8},
                             .dhcp = NETINFO_STATIC };
 
@@ -542,6 +551,21 @@ int main(void)
 			if (flag_usb == 1) {
 				flag_usb = 0;
 				strcpy(post_url,(char *) str_rx2);
+				USART1_Send(ip1);
+				USART1_Send('.');
+				USART1_Send(ip2);
+				USART1_Send('.');
+				USART1_Send(ip3);
+				USART1_Send('.');
+				USART1_Send(ip4);
+				USART1_Send('\r');
+				USART1_Send(gw1);
+				USART1_Send('.');
+				USART1_Send(gw2);
+				USART1_Send('.');
+				USART1_Send(gw3);
+				USART1_Send('.');
+				USART1_Send(gw4);
 				Set_outputs(str_rx2);
 			}
 		}

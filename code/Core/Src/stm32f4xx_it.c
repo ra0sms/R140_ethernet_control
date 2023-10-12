@@ -15,6 +15,19 @@
   *
   ******************************************************************************
   */
+/*
+ * Format for IP address
+ * IP1...;
+ * IP2...;
+ * IP3...;
+ * IP4...;
+ *
+ * For gateway
+ * GW1...;
+ * GW2...;
+ * GW3...;
+ * GW4...;
+ */
 /* USER CODE END Header */
 
 /* Includes ------------------------------------------------------------------*/
@@ -25,6 +38,14 @@
 extern char str_rx2[25];
 extern char flag_ok;
 extern uint8_t flag_usb;
+extern char ip1;
+extern char ip2;
+extern char ip3;
+extern char ip4;
+extern char gw1;
+extern char gw2;
+extern char gw3;
+extern char gw4;
 
 /* USER CODE END Includes */
 
@@ -241,22 +262,119 @@ void SPI1_IRQHandler(void)
 /**
   * @brief This function handles USART1 global interrupt.
   */
-void USART1_IRQHandler(void)
-{
-  /* USER CODE BEGIN USART1_IRQn 0 */
+void USART1_IRQHandler(void) {
+	/* USER CODE BEGIN USART1_IRQn 0 */
 	char letter;
-		static uint8_t i = 0;
-		letter = USART1->DR;
-		if (letter != '\r')
-		{
-			str_rx2[i] = letter;
-			i++;
-			if (i == 24) i = 0;
-		}else {str_rx2[i] = '\r'; i = 0; flag_ok=1; flag_usb=1;}
-  /* USER CODE END USART1_IRQn 0 */
-  /* USER CODE BEGIN USART1_IRQn 1 */
+	static uint8_t i = 0;
+	letter = USART1->DR;
+	flag_usb = 1;
+	if (letter != '\r') {
+		str_rx2[i] = letter;
+		i++;
+		if (i == 24)
+			i = 0;
+	} else {
+		str_rx2[i] = '\r';
+		i = 0;
+		flag_ok = 1;
+		if ((str_rx2[0] == 'I') && (str_rx2[1] == 'P')) {
+			if (str_rx2[2] == '1') {
+				if (str_rx2[3] != ';') {
+					ip1 = (str_rx2[3] - 48) * 100;
+				}
+				if (str_rx2[4] != ';') {
+					ip1 = ip1 + (str_rx2[4] - 48) * 10;
+				}
+				if (str_rx2[5] != ';') {
+					ip1 = ip1 + (str_rx2[5] - 48);
+				}
+			}
+			if (str_rx2[2] == '2') {
+				if (str_rx2[3] != ';') {
+					ip2 = (str_rx2[3] - 48) * 100;
+				}
+				if (str_rx2[4] != ';') {
+					ip2 = ip2 + (str_rx2[4] - 48) * 10;
+				}
+				if (str_rx2[5] != ';') {
+					ip2 = ip2 + (str_rx2[5] - 48);
+				}
+			}
+			if (str_rx2[2] == '3') {
+				if (str_rx2[3] != ';') {
+					ip3 = (str_rx2[3] - 48) * 100;
+				}
+				if (str_rx2[4] != ';') {
+					ip3 = ip3 + (str_rx2[4] - 48) * 10;
+				}
+				if (str_rx2[5] != ';') {
+					ip3 = ip3 + (str_rx2[5] - 48);
+				}
+			}
+			if (str_rx2[2] == '4') {
+				if (str_rx2[3] != ';') {
+					ip4 = (str_rx2[3] - 48) * 100;
+				}
+				if (str_rx2[4] != ';') {
+					ip4 = ip4 + (str_rx2[4] - 48) * 10;
+				}
+				if (str_rx2[5] != ';') {
+					ip4 = ip4 + (str_rx2[5] - 48);
+				}
+			}
+		}
+		if ((str_rx2[0] == 'G') && (str_rx2[1] == 'W')) {
+			if (str_rx2[2] == '1') {
+				if (str_rx2[3] != ';') {
+					gw1 = (str_rx2[3] - 48) * 100;
+				}
+				if (str_rx2[4] != ';') {
+					gw1 = gw1 + (str_rx2[4] - 48) * 10;
+				}
+				if (str_rx2[5] != ';') {
+					gw1 = gw1 + (str_rx2[5] - 48);
+				}
+			}
+			if (str_rx2[2] == '2') {
+				if (str_rx2[3] != ';') {
+					gw2 = (str_rx2[3] - 48) * 100;
+				}
+				if (str_rx2[4] != ';') {
+					gw2 = gw2 + (str_rx2[4] - 48) * 10;
+				}
+				if (str_rx2[5] != ';') {
+					gw2 = gw2 + (str_rx2[5] - 48);
+				}
+			}
+			if (str_rx2[2] == '3') {
+				if (str_rx2[3] != ';') {
+					gw3 = (str_rx2[3] - 48) * 100;
+				}
+				if (str_rx2[4] != ';') {
+					gw3 = gw3 + (str_rx2[4] - 48) * 10;
+				}
+				if (str_rx2[5] != ';') {
+					gw3 = gw3 + (str_rx2[5] - 48);
+				}
+			}
+			if (str_rx2[2] == '4') {
+				if (str_rx2[3] != ';') {
+					gw4 = (str_rx2[3] - 48) * 100;
+				}
+				if (str_rx2[4] != ';') {
+					gw4 = gw4 + (str_rx2[4] - 48) * 10;
+				}
+				if (str_rx2[5] != ';') {
+					gw4 = gw4 + (str_rx2[5] - 48);
+				}
+			}
+		}
+	}
 
-  /* USER CODE END USART1_IRQn 1 */
+	/* USER CODE END USART1_IRQn 0 */
+	/* USER CODE BEGIN USART1_IRQn 1 */
+
+	/* USER CODE END USART1_IRQn 1 */
 }
 
 /**
