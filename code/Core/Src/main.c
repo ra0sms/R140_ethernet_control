@@ -394,7 +394,7 @@ int32_t loopback_tcps(uint8_t sn, char* buf, uint16_t port)
 					strcat(buf, "SIMPLE HTTP ");
 
 				}else
-				if (memcmp(url, "/switch", 5) == 0) {
+				if (memcmp(url, "/switch", 7) == 0) {
 					BuildSwitchPage(buf);
 				}else
 				if ((memcmp(url, "/ H", 3) == 0)) {
@@ -529,7 +529,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
 
 	while (1) {
-		/*UART_Printf("Creating socket...\r\n");
+		UART_Printf("Creating socket...\r\n");
 		stat = socket(HTTP_SOCKET, Sn_MR_TCP, 80, 0);
 		if (stat != HTTP_SOCKET)
 			UART_Printf("socket() failed, code = %d\r\n", stat);
@@ -542,6 +542,7 @@ int main(void)
 			UART_Printf("listen() OK\r\n");
 		while (getSn_SR(HTTP_SOCKET) == SOCK_LISTEN) {
 			HAL_Delay(5);
+			USB_change_out();
 		}
 		UART_Printf("Input connection\r\n");
 		if (getSn_SR(HTTP_SOCKET) != SOCK_ESTABLISHED)
@@ -552,8 +553,8 @@ int main(void)
 
 		loopback_tcps(HTTP_SOCKET, gDATABUF, 80);
 
-		close(HTTP_SOCKET);*/
-		USB_change_out();
+		close(HTTP_SOCKET);
+
 
 		/* USER CODE END WHILE */
 
