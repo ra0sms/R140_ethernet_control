@@ -22,7 +22,7 @@
 #include "stm32f4xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-extern char str_rx1[25];
+extern char str_rx2[25];
 extern char flag_ok;
 
 /* USER CODE END Includes */
@@ -248,10 +248,10 @@ void USART1_IRQHandler(void)
 		letter = USART1->DR;
 		if (letter != '\r')
 		{
-			str_rx1[i] = letter;
+			str_rx2[i] = letter;
 			i++;
 			if (i == 24) i = 0;
-		}else {str_rx1[i] = '\r'; i = 0; flag_ok=1;}
+		}else {str_rx2[i] = '\r'; i = 0; flag_ok=1;}
   /* USER CODE END USART1_IRQn 0 */
   /* USER CODE BEGIN USART1_IRQn 1 */
 

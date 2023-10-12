@@ -30,10 +30,12 @@
 #include "dhcp.h"
 #include "dns.h"
 
-char str_rx1[25];
+char str_rx2[25];
 char flag_ok = 0;
 uint8_t out1[8];
 uint8_t out2[8];
+char *get_url;
+
 
 void USART1_Send (char chr);
 void USART1_Send_String (char* str);
@@ -44,13 +46,13 @@ void USART1_Send_String (char* str);
 /* USER CODE BEGIN PTD */
 
 
-void USB_change_out ()
+void Set_outputs (char* str_rx1)
 {
-	if ((str_rx1[0] == 'A')&&(str_rx1[1] == 'M')&&(str_rx1[2] == '1')&&(str_rx1[3] == '1')) out1[0] = 1;
-	if ((str_rx1[0] == 'A')&&(str_rx1[1] == 'M')&&(str_rx1[2] == '1')&&(str_rx1[3] == '0')) out1[0] = 0;
+	if (((str_rx1[0] == 'A')||(str_rx1[0] == 'a'))&&((str_rx1[1] == 'M')||(str_rx1[1] == 'm'))&&(str_rx1[2] == '1')&&(str_rx1[3] == '1')) out1[0] = 1;
+	if (((str_rx1[0] == 'A')||(str_rx1[0] == 'a'))&&((str_rx1[1] == 'M')||(str_rx1[1] == 'm'))&&(str_rx1[2] == '1')&&(str_rx1[3] == '0')) out1[0] = 0;
 
-	if ((str_rx1[0] == 'A')&&(str_rx1[1] == 'M')&&(str_rx1[2] == '1')&&(str_rx1[4] == '1')) out1[1] = 1;
-	if ((str_rx1[0] == 'A')&&(str_rx1[1] == 'M')&&(str_rx1[2] == '1')&&(str_rx1[4] == '0')) out1[1] = 0;
+	if (((str_rx1[0] == 'A')||(str_rx1[0] == 'a'))&&((str_rx1[1] == 'M')||(str_rx1[1] == 'm'))&&(str_rx1[2] == '1')&&(str_rx1[4] == '1')) out1[1] = 1;
+	if (((str_rx1[0] == 'A')||(str_rx1[0] == 'a'))&&((str_rx1[1] == 'M')||(str_rx1[1] == 'm'))&&(str_rx1[2] == '1')&&(str_rx1[4] == '0')) out1[1] = 0;
 
 	if ((str_rx1[0] == 'A')&&(str_rx1[1] == 'M')&&(str_rx1[2] == '1')&&(str_rx1[5] == '1')) out1[2] = 1;
 	if ((str_rx1[0] == 'A')&&(str_rx1[1] == 'M')&&(str_rx1[2] == '1')&&(str_rx1[5] == '0')) out1[2] = 0;
@@ -360,84 +362,83 @@ void W5500_WriteByte(uint8_t byte)
 }
 
 
-int32_t loopback_tcps(uint8_t sn, char* buf, uint16_t port)
-{
-   int32_t ret;
-   uint32_t size = 0, sentsize=0;
-   char *url;
+int32_t loopback_tcps(uint8_t sn, char *buf, uint16_t port) {
+	int32_t ret;
+	uint32_t size = 0, sentsize = 0;
+	char *url;
 
-   switch(getSn_SR(sn))
-   {
-      case SOCK_ESTABLISHED :
-         if(getSn_IR(sn) & Sn_IR_CON)
-         {
-        	UART_Printf("%d:Connected\r\n",sn);
-            setSn_IR(sn,Sn_IR_CON);
-         }
-         if((size = getSn_RX_RSR(sn)) > 0)
-         {
-            if(size > DATA_BUF_SIZE) size = DATA_BUF_SIZE;
-            ret = recv(sn,buf,size);
-            if(ret <= 0)
-            return ret;
-            sentsize = 0;
+	switch (getSn_SR(sn)) {
+	case SOCK_ESTABLISHED:
+		if (getSn_IR(sn) & Sn_IR_CON) {
+			UART_Printf("%d:Connected\r\n", sn);
+			setSn_IR(sn, Sn_IR_CON);
+		}
+		if ((size = getSn_RX_RSR(sn)) > 0) {
+			if (size > DATA_BUF_SIZE)
+				size = DATA_BUF_SIZE;
+			ret = recv(sn, buf, size);
+			if (ret <= 0)
+				return ret;
+			sentsize = 0;
 //=============================================
-            if(memcmp(buf, "GET ", 4)==0)
-            {
-             url = buf + 4;
-               if(memcmp(url, "/xml", 4) == 0)
-                  {
-            	   buildXML(buf);
-                  }else
-				if (memcmp(url, "/wifi", 5) == 0) {
+			if (memcmp(buf, "GET ", 4) == 0) {
+				url = buf + 4;
+
+				if (memcmp(url, "/xml", 4) == 0) {
+					buildXML(buf);
+				} else if (memcmp(url, "/wifi", 5) == 0) {
 					strcpy(buf, http_200_header);
 					strcat(buf, "SIMPLE HTTP ");
 
-				}else
-				if (memcmp(url, "/switch", 7) == 0) {
+				} else if (memcmp(url, "/switch", 7) == 0) {
 					BuildSwitchPage(buf);
-				}else
-				if ((memcmp(url, "/ H", 3) == 0)) {
+				} else if ((memcmp(url, "/ H", 3) == 0)) {
 					BuildStartPage(buf);
+				} else if (memcmp(url, "/AM1", 4) == 0) {
+					get_url = url + 1;
+					Set_outputs(get_url);
+					BuildStartPage(buf);
+					//USART1_Send_String(get_url);
 				}else
-              {
-               strcpy(buf,http_404_header);
-              }
- //======================================================
-              size=strlen(buf);
-              while(size != sentsize)
-             {
-              ret = send(sn,buf+sentsize,size-sentsize);
-               if(ret < 0)
-               {
-                close(sn);
-                return ret;
-               }
-               sentsize += ret;
-             }
-            }
-            disconnect(sn);
-         }
-         break;
-      case SOCK_CLOSE_WAIT :
-    	  UART_Printf("%d:CloseWait\r\n",sn);
-         if((ret=disconnect(sn)) != SOCK_OK) return ret;
-         UART_Printf("%d:Closed\r\n",sn);
-         break;
-      case SOCK_INIT :
-    	  UART_Printf("%d:Listen, port [%d]\r\n",sn, port);
-         if( (ret = listen(sn)) != SOCK_OK) return ret;
-         break;
-      case SOCK_CLOSED:
-    	  UART_Printf("%d:LBTStart\r\n",sn);
-         if((ret=socket(sn,Sn_MR_TCP,port,0x00)) != sn)
-            return ret;
-         UART_Printf("%d:Opened\r\n",sn);
-         break;
-      default:
-         break;
-   }
-   return 1;
+
+				{
+					strcpy(buf, http_404_header);
+				}
+				//======================================================
+				size = strlen(buf);
+				while (size != sentsize) {
+					ret = send(sn, buf + sentsize, size - sentsize);
+					if (ret < 0) {
+						close(sn);
+						return ret;
+					}
+					sentsize += ret;
+				}
+			}
+			disconnect(sn);
+		}
+		break;
+	case SOCK_CLOSE_WAIT:
+		UART_Printf("%d:CloseWait\r\n", sn);
+		if ((ret = disconnect(sn)) != SOCK_OK)
+			return ret;
+		UART_Printf("%d:Closed\r\n", sn);
+		break;
+	case SOCK_INIT:
+		UART_Printf("%d:Listen, port [%d]\r\n", sn, port);
+		if ((ret = listen(sn)) != SOCK_OK)
+			return ret;
+		break;
+	case SOCK_CLOSED:
+		UART_Printf("%d:LBTStart\r\n", sn);
+		if ((ret = socket(sn, Sn_MR_TCP, port, 0x00)) != sn)
+			return ret;
+		UART_Printf("%d:Opened\r\n", sn);
+		break;
+	default:
+		break;
+	}
+	return 1;
 }
 
 /* USER CODE END PV */
@@ -542,7 +543,7 @@ int main(void)
 			UART_Printf("listen() OK\r\n");
 		while (getSn_SR(HTTP_SOCKET) == SOCK_LISTEN) {
 			HAL_Delay(5);
-			USB_change_out();
+			//Set_outputs(str_rx2);
 		}
 		UART_Printf("Input connection\r\n");
 		if (getSn_SR(HTTP_SOCKET) != SOCK_ESTABLISHED)
