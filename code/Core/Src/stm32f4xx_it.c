@@ -24,6 +24,7 @@
 /* USER CODE BEGIN Includes */
 extern char str_rx2[25];
 extern char flag_ok;
+extern uint8_t flag_usb;
 
 /* USER CODE END Includes */
 
@@ -251,7 +252,7 @@ void USART1_IRQHandler(void)
 			str_rx2[i] = letter;
 			i++;
 			if (i == 24) i = 0;
-		}else {str_rx2[i] = '\r'; i = 0; flag_ok=1;}
+		}else {str_rx2[i] = '\r'; i = 0; flag_ok=1; flag_usb=1;}
   /* USER CODE END USART1_IRQn 0 */
   /* USER CODE BEGIN USART1_IRQn 1 */
 

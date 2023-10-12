@@ -35,6 +35,9 @@ char flag_ok = 0;
 uint8_t out1[8];
 uint8_t out2[8];
 char *get_url;
+char post_url[25];
+uint8_t flag_usb = 0;
+uint8_t flag_ethernet = 0;
 
 
 void USART1_Send (char chr);
@@ -48,11 +51,11 @@ void USART1_Send_String (char* str);
 
 void Set_outputs (char* str_rx1)
 {
-	if (((str_rx1[0] == 'A')||(str_rx1[0] == 'a'))&&((str_rx1[1] == 'M')||(str_rx1[1] == 'm'))&&(str_rx1[2] == '1')&&(str_rx1[3] == '1')) out1[0] = 1;
-	if (((str_rx1[0] == 'A')||(str_rx1[0] == 'a'))&&((str_rx1[1] == 'M')||(str_rx1[1] == 'm'))&&(str_rx1[2] == '1')&&(str_rx1[3] == '0')) out1[0] = 0;
+	if ((str_rx1[0] == 'A')&&(str_rx1[1] == 'M')&&(str_rx1[2] == '1')&&(str_rx1[3] == '1')) out1[0] = 1;
+	if ((str_rx1[0] == 'A')&&(str_rx1[1] == 'M')&&(str_rx1[2] == '1')&&(str_rx1[3] == '0')) out1[0] = 0;
 
-	if (((str_rx1[0] == 'A')||(str_rx1[0] == 'a'))&&((str_rx1[1] == 'M')||(str_rx1[1] == 'm'))&&(str_rx1[2] == '1')&&(str_rx1[4] == '1')) out1[1] = 1;
-	if (((str_rx1[0] == 'A')||(str_rx1[0] == 'a'))&&((str_rx1[1] == 'M')||(str_rx1[1] == 'm'))&&(str_rx1[2] == '1')&&(str_rx1[4] == '0')) out1[1] = 0;
+	if ((str_rx1[0] == 'A')&&(str_rx1[1] == 'M')&&(str_rx1[2] == '1')&&(str_rx1[4] == '1')) out1[1] = 1;
+	if ((str_rx1[0] == 'A')&&(str_rx1[1] == 'M')&&(str_rx1[2] == '1')&&(str_rx1[4] == '0')) out1[1] = 0;
 
 	if ((str_rx1[0] == 'A')&&(str_rx1[1] == 'M')&&(str_rx1[2] == '1')&&(str_rx1[5] == '1')) out1[2] = 1;
 	if ((str_rx1[0] == 'A')&&(str_rx1[1] == 'M')&&(str_rx1[2] == '1')&&(str_rx1[5] == '0')) out1[2] = 0;
@@ -307,8 +310,9 @@ void BuildSwitchPage (char* buf){
 }
 
 void buildXML(char* buf) {
-	strcpy(buf,"<?xml version='1.0'?>");
-	strcat(buf,"<response> A1 </response>");
+	strcpy(buf, (char *)post_url);
+	/*strcpy(buf,"<?xml version='1.0'?>");
+	strcat(buf,"<response> A1 </response>");*/
 }
 
 
@@ -386,16 +390,13 @@ int32_t loopback_tcps(uint8_t sn, char *buf, uint16_t port) {
 
 				if (memcmp(url, "/xml", 4) == 0) {
 					buildXML(buf);
-				} else if (memcmp(url, "/wifi", 5) == 0) {
-					strcpy(buf, http_200_header);
-					strcat(buf, "SIMPLE HTTP ");
-
 				} else if (memcmp(url, "/switch", 7) == 0) {
 					BuildSwitchPage(buf);
 				} else if ((memcmp(url, "/ H", 3) == 0)) {
 					BuildStartPage(buf);
 				} else if (memcmp(url, "/AM1", 4) == 0) {
 					get_url = url + 1;
+					strncpy(post_url, (char *)get_url,19);
 					Set_outputs(get_url);
 					BuildStartPage(buf);
 					//USART1_Send_String(get_url);
@@ -543,7 +544,11 @@ int main(void)
 			UART_Printf("listen() OK\r\n");
 		while (getSn_SR(HTTP_SOCKET) == SOCK_LISTEN) {
 			HAL_Delay(5);
-			//Set_outputs(str_rx2);
+			if (flag_usb == 1) {
+				flag_usb = 0;
+				strcpy(post_url,(char *) str_rx2);
+				Set_outputs(str_rx2);
+			}
 		}
 		UART_Printf("Input connection\r\n");
 		if (getSn_SR(HTTP_SOCKET) != SOCK_ESTABLISHED)
@@ -555,7 +560,6 @@ int main(void)
 		loopback_tcps(HTTP_SOCKET, gDATABUF, 80);
 
 		close(HTTP_SOCKET);
-
 
 		/* USER CODE END WHILE */
 
