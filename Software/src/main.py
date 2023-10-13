@@ -25,12 +25,27 @@ ui.comL.addItems(portList)
 
 
 TIME_INTERVAL = 100000    # msec between button ON enabled
+SERVER_IP_ADDRESS = ""
 all_out_off = "AM10000000000000000\r"
 check_out_list = ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"]
 header = "AM1"
 is_push_on_btn = 0
 grey_button_style = "background-color : gray window"
 red_button_style = "background-color : red; border-color: black; border: none"
+
+
+def read_from_config_file():
+    global SERVER_IP_ADDRESS
+    try:
+        with open("ip_config.ini", "r") as f:
+            text = f.readline()
+            text = text.split(sep=":")
+            print(text)
+            SERVER_IP_ADDRESS = text[1].strip().rstrip()
+            print(SERVER_IP_ADDRESS)
+            set_output()
+    except FileNotFoundError:
+        show_warning_messagebox()
 
 
 def connect_to_server(address: str, request: str):
@@ -50,7 +65,7 @@ def send_http_data(request: str):
     timeout = 30
     start = time.time()
     print("start: ",start)
-    while not connect_to_server("192.168.0.230", request):
+    while not connect_to_server(SERVER_IP_ADDRESS, request):
         print("Nope", count)
         if (time.time() - start) > timeout:
             print("stop: ", time.time())
@@ -66,9 +81,10 @@ def send_http_data(request: str):
 
 
 def set_output():
-    """Send to COM port data in the format AM10000000000000000\r"""
+    """Set output format AM10000000000000000\r"""
     out_str = (header + ("".join(check_out_list[0:11])) + "0" + check_out_list[11] + "00" + check_out_list[12])
-    send_http_data(out_str)
+    return True if send_http_data(out_str) else False
+
 
 
 def set_all_buttons_off():
@@ -95,7 +111,7 @@ def set_all_buttons_off():
 def show_warning_messagebox():
     msg = QMessageBox()
     msg.setIcon(QMessageBox.Warning)
-    msg.setText("COM port is not opened!")
+    msg.setText("Warning!")
     msg.setWindowTitle("Warning")
     msg.setStandardButtons(QMessageBox.Ok)
     retval = msg.exec_()
@@ -426,7 +442,7 @@ def on_stbOffB():
         show_warning_messagebox()
 
 
-set_output()
+read_from_config_file()
 serial.readyRead.connect(on_read)   # reading from COM port routine
 ui.onB.setDisabled(True)            # disabled button at start
 ui.stbB.setDisabled(True)           # disabled button at start
