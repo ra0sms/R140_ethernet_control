@@ -550,6 +550,7 @@ int main(void)
 			if (flag_usb == 1) {
 				flag_usb = 0;
 				strcpy(post_url,(char *) str_rx2);
+				Set_outputs(str_rx2);
 			}
 		}
 		/*UART_Printf("Input connection\r\n");

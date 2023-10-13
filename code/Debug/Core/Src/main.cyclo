@@ -27,10 +27,10 @@
 ../Core/Src/main.c:436:6:WriteToEEPROM	1
 ../Core/Src/main.c:453:10:ReadFromEEPROM	1
 ../Core/Src/main.c:469:5:main	3
-../Core/Src/main.c:577:6:SystemClock_Config	3
-../Core/Src/main.c:627:13:MX_SPI1_Init	2
-../Core/Src/main.c:665:13:MX_TIM10_Init	1
-../Core/Src/main.c:701:13:MX_USART1_UART_Init	1
-../Core/Src/main.c:756:13:MX_GPIO_Init	1
-../Core/Src/main.c:829:6:HAL_TIM_PeriodElapsedCallback	2
-../Core/Src/main.c:846:6:Error_Handler	1
+../Core/Src/main.c:578:6:SystemClock_Config	3
+../Core/Src/main.c:628:13:MX_SPI1_Init	2
+../Core/Src/main.c:666:13:MX_TIM10_Init	1
+../Core/Src/main.c:702:13:MX_USART1_UART_Init	1
+../Core/Src/main.c:757:13:MX_GPIO_Init	1
+../Core/Src/main.c:830:6:HAL_TIM_PeriodElapsedCallback	2
+../Core/Src/main.c:847:6:Error_Handler	1
