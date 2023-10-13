@@ -512,7 +512,7 @@ int main(void)
 
 	wizchip_init(rx_tx_buff_sizes, rx_tx_buff_sizes);
 
-	//WriteToEEPROM(EEPROM_ADRESS_START, gWIZNETINFO);
+	/*WriteToEEPROM(EEPROM_ADRESS_START, gWIZNETINFO);
 
 	gWIZNETINFO.ip[0] = ReadFromEEPROM(EEPROM_ADRESS_START);
 	gWIZNETINFO.ip[1] = ReadFromEEPROM(EEPROM_ADRESS_START+4);
@@ -522,7 +522,7 @@ int main(void)
 	gWIZNETINFO.gw[0] = ReadFromEEPROM(EEPROM_ADRESS_START+16);
 	gWIZNETINFO.gw[1] = ReadFromEEPROM(EEPROM_ADRESS_START+20);
 	gWIZNETINFO.gw[2] = ReadFromEEPROM(EEPROM_ADRESS_START+24);
-	gWIZNETINFO.gw[3] = ReadFromEEPROM(EEPROM_ADRESS_START+28);
+	gWIZNETINFO.gw[3] = ReadFromEEPROM(EEPROM_ADRESS_START+28);*/
 
 
 	wizchip_setnetinfo(&gWIZNETINFO);
@@ -535,43 +535,26 @@ int main(void)
   /* USER CODE BEGIN WHILE */
 
 	while (1) {
-		UART_Printf("Creating socket...\r\n");
 		stat = socket(HTTP_SOCKET, Sn_MR_TCP, 80, 0);
-		if (stat != HTTP_SOCKET)
+		/*if (stat != HTTP_SOCKET)
 			UART_Printf("socket() failed, code = %d\r\n", stat);
 		else
-			UART_Printf("Socket created, connecting...\r\n");
+			UART_Printf("Socket created, connecting...\r\n");*/
 		stat = listen(HTTP_SOCKET);
-		if (stat != SOCK_OK)
+		/*if (stat != SOCK_OK)
 			UART_Printf("listen() failed, code = %d\r\n", stat);
 		else
-			UART_Printf("listen() OK\r\n");
+			UART_Printf("listen() OK\r\n");*/
 		while (getSn_SR(HTTP_SOCKET) == SOCK_LISTEN) {
 			HAL_Delay(5);
 			if (flag_usb == 1) {
 				flag_usb = 0;
 				strcpy(post_url,(char *) str_rx2);
-				USART1_Send(ip1);
-				USART1_Send('.');
-				USART1_Send(ip2);
-				USART1_Send('.');
-				USART1_Send(ip3);
-				USART1_Send('.');
-				USART1_Send(ip4);
-				USART1_Send('\r');
-				USART1_Send(gw1);
-				USART1_Send('.');
-				USART1_Send(gw2);
-				USART1_Send('.');
-				USART1_Send(gw3);
-				USART1_Send('.');
-				USART1_Send(gw4);
-				Set_outputs(str_rx2);
 			}
 		}
-		UART_Printf("Input connection\r\n");
+		/*UART_Printf("Input connection\r\n");
 		if (getSn_SR(HTTP_SOCKET) != SOCK_ESTABLISHED)
-			UART_Printf("Error socket status\r\n");
+			UART_Printf("Error socket status\r\n");*/
 		uint8_t rIP[4];
 		getsockopt(HTTP_SOCKET, SO_DESTIP, rIP);
 		UART_Printf("IP:  %d.%d.%d.%d\r\n", rIP[0], rIP[1], rIP[2], rIP[3]);
