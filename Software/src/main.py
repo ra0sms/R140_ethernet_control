@@ -43,9 +43,11 @@ def read_from_config_file():
             print(text)
             SERVER_IP_ADDRESS = text[1].strip().rstrip()
             print(SERVER_IP_ADDRESS)
+            ui.labelIP.setText("IP: " + SERVER_IP_ADDRESS)
             set_output()
     except FileNotFoundError:
         show_warning_messagebox()
+        ui.labelIP.setText("IP: None")
 
 
 def connect_to_server(address: str, request: str):
