@@ -1,10 +1,7 @@
 import time
-
-import PyQt5.QtWidgets
 import http.client
 from PyQt5 import QtWidgets, uic, QtGui
-from PyQt5.QtSerialPort import QSerialPort, QSerialPortInfo
-from PyQt5.QtCore import QIODevice, QTimer, QEvent
+from PyQt5.QtCore import QTimer, QEvent
 from PyQt5.QtWidgets import QMessageBox, QWidget
 
 
@@ -12,16 +9,6 @@ app = QtWidgets.QApplication([])
 ui = uic.loadUi("main_design.ui")
 ui.setWindowTitle("R-140 Remote Control")
 ui.setWindowIcon(QtGui.QIcon("logo.png"))
-
-
-serial = QSerialPort()
-timer = QTimer()
-serial.setBaudRate(115200)
-portList = []
-ports = QSerialPortInfo().availablePorts()
-for port in ports:
-    portList.append(port.portName())
-ui.comL.addItems(portList)
 
 
 TIME_INTERVAL = 100000    # msec between button ON enabled
@@ -32,6 +19,7 @@ header = "AM1"
 is_push_on_btn = 0
 grey_button_style = "background-color : gray window"
 red_button_style = "background-color : red; border-color: black; border: none"
+timer = QTimer()
 
 
 def read_from_config_file():
@@ -46,7 +34,7 @@ def read_from_config_file():
             ui.labelIP.setText("IP: " + SERVER_IP_ADDRESS)
             set_output()
     except FileNotFoundError:
-        show_warning_messagebox()
+        show_file_messagebox()
         ui.labelIP.setText("IP: None")
 
 
@@ -88,7 +76,6 @@ def set_output():
     return True if send_http_data(out_str) else False
 
 
-
 def set_all_buttons_off():
     ui.onB.setStyleSheet(grey_button_style)
     ui.stbB.setStyleSheet(grey_button_style)
@@ -104,7 +91,6 @@ def set_all_buttons_off():
     ui.eighthB.setStyleSheet(grey_button_style)
     ui.stbOnB.setStyleSheet(grey_button_style)
     ui.stbOffB.setStyleSheet(grey_button_style)
-    ui.OpenB.setStyleSheet(grey_button_style)
     ui.startB.setStyleSheet(grey_button_style)
     for k in range(len(check_out_list)):
         check_out_list[k] = '0'
@@ -113,57 +99,37 @@ def set_all_buttons_off():
 def show_warning_messagebox():
     msg = QMessageBox()
     msg.setIcon(QMessageBox.Warning)
-    msg.setText("Warning!")
+    msg.setText("Check network connection!")
     msg.setWindowTitle("Warning")
     msg.setStandardButtons(QMessageBox.Ok)
     retval = msg.exec_()
 
 
-def on_read():
-    if not serial.canReadLine():
-        return
-    rx = serial.readLine()
-    rxs = str(rx, 'utf-8').strip()
-    data = rxs.split(',')
-
-
-def on_open():
-    if serial.isOpen():
-        serial.write(all_out_off.encode())
-        serial.waitForBytesWritten(10)
-        ui.OpenB.setText("OPEN")
-        ui.labelCOM.setText("COM port closed")
-        set_all_buttons_off()
-        ui.onB.setDisabled(True)
-        serial.close()
-        set_output()
-    else:
-        serial.setPortName(ui.comL.currentText())
-        serial.open(QIODevice.ReadWrite)
-        ui.labelCOM.setText("COM port opened")
-        ui.OpenB.setText("CLOSE")
-        ui.onB.setDisabled(True)
-        set_all_buttons_off()
-
+def show_file_messagebox():
+    msg = QMessageBox()
+    msg.setIcon(QMessageBox.Warning)
+    msg.setText("Config file not found!")
+    msg.setWindowTitle("Warning")
+    msg.setStandardButtons(QMessageBox.Ok)
+    retval = msg.exec_()
 
 
 def on_off():
-    if serial.isOpen():
-        serial.write(all_out_off.encode())
-        serial.waitForBytesWritten(10)
+    if SERVER_IP_ADDRESS:
         set_all_buttons_off()
-        ui.fanB.setStyleSheet(grey_button_style)
-        ui.stbB.setStyleSheet(grey_button_style)
-        ui.onB.setStyleSheet(grey_button_style)
-        ui.offB.setStyleSheet(grey_button_style)
-        ui.onB.setDisabled(True)
+        if set_output():
+            ui.fanB.setStyleSheet(grey_button_style)
+            ui.stbB.setStyleSheet(grey_button_style)
+            ui.onB.setStyleSheet(grey_button_style)
+            ui.offB.setStyleSheet(grey_button_style)
+            ui.onB.setDisabled(True)
     else:
         show_warning_messagebox()
 
 
 def on_fan():
     global is_push_on_btn
-    if serial.isOpen():
+    if SERVER_IP_ADDRESS:
         check_out_list[8] = "1"
         check_out_list[9] = "0"
         check_out_list[10] = "0"
@@ -188,7 +154,7 @@ def set_on_enabled():
 
 def on_stb():
     global is_push_on_btn
-    if serial.isOpen():
+    if SERVER_IP_ADDRESS:
         check_out_list[8] = "0"
         check_out_list[9] = "1"
         check_out_list[10] = "0"
@@ -196,7 +162,6 @@ def on_stb():
         ui.onB.setStyleSheet(grey_button_style)
         ui.fanB.setStyleSheet(grey_button_style)
         ui.offB.setStyleSheet(grey_button_style)
-        ui.OpenB.setEnabled(True)
         set_output()
         if is_push_on_btn == 0:
             timer.singleShot(TIME_INTERVAL, set_on_enabled)
@@ -212,7 +177,7 @@ def on_stb():
 
 def on_on():
     global is_push_on_btn
-    if serial.isOpen():
+    if SERVER_IP_ADDRESS:
         check_out_list[8] = "0"
         check_out_list[9] = "0"
         check_out_list[10] = "1"
@@ -220,7 +185,6 @@ def on_on():
         ui.stbB.setStyleSheet(grey_button_style)
         ui.fanB.setStyleSheet(grey_button_style)
         ui.offB.setStyleSheet(grey_button_style)
-        ui.OpenB.setDisabled(True)
         set_output()
         is_push_on_btn = 1
         ui.fanB.setDisabled(True)
@@ -229,7 +193,7 @@ def on_on():
 
 
 def on_firstB():
-    if serial.isOpen():
+    if SERVER_IP_ADDRESS:
         check_out_list[0] = "1"
         check_out_list[1] = "0"
         check_out_list[2] = "0"
@@ -252,7 +216,7 @@ def on_firstB():
 
 
 def on_secondB():
-    if serial.isOpen():
+    if SERVER_IP_ADDRESS:
         check_out_list[0] = "0"
         check_out_list[1] = "1"
         check_out_list[2] = "0"
@@ -273,8 +237,9 @@ def on_secondB():
     else:
         show_warning_messagebox()
 
+
 def on_thirdB():
-    if serial.isOpen():
+    if SERVER_IP_ADDRESS:
         check_out_list[0] = "0"
         check_out_list[1] = "0"
         check_out_list[2] = "1"
@@ -296,7 +261,7 @@ def on_thirdB():
         show_warning_messagebox()
 
 def on_fourthB():
-    if serial.isOpen():
+    if SERVER_IP_ADDRESS:
         check_out_list[0] = "0"
         check_out_list[1] = "0"
         check_out_list[2] = "0"
@@ -319,7 +284,7 @@ def on_fourthB():
 
 
 def on_fifthB():
-    if serial.isOpen():
+    if SERVER_IP_ADDRESS:
         check_out_list[0] = "0"
         check_out_list[1] = "0"
         check_out_list[2] = "0"
@@ -342,7 +307,7 @@ def on_fifthB():
 
 
 def on_sixthB():
-    if serial.isOpen():
+    if SERVER_IP_ADDRESS:
         check_out_list[0] = "0"
         check_out_list[1] = "0"
         check_out_list[2] = "0"
@@ -365,7 +330,7 @@ def on_sixthB():
 
 
 def on_seventhB():
-    if serial.isOpen():
+    if SERVER_IP_ADDRESS:
         check_out_list[0] = "0"
         check_out_list[1] = "0"
         check_out_list[2] = "0"
@@ -388,7 +353,7 @@ def on_seventhB():
 
 
 def on_eightB():
-    if serial.isOpen():
+    if SERVER_IP_ADDRESS:
         check_out_list[0] = "0"
         check_out_list[1] = "0"
         check_out_list[2] = "0"
@@ -417,7 +382,7 @@ def reset_start():
 
 
 def on_startB():
-    if serial.isOpen():
+    if SERVER_IP_ADDRESS:
         check_out_list[12] = "1"
         ui.startB.setStyleSheet(red_button_style)
         set_output()
@@ -427,7 +392,7 @@ def on_startB():
 
 
 def on_stbOnB():
-    if serial.isOpen():
+    if SERVER_IP_ADDRESS:
         check_out_list[11] = "1"
         ui.stbOnB.setStyleSheet(red_button_style)
         set_output()
@@ -436,7 +401,7 @@ def on_stbOnB():
 
 
 def on_stbOffB():
-    if serial.isOpen():
+    if SERVER_IP_ADDRESS:
         check_out_list[11] = "0"
         ui.stbOnB.setStyleSheet(grey_button_style)
         set_output()
@@ -445,10 +410,8 @@ def on_stbOffB():
 
 
 read_from_config_file()
-serial.readyRead.connect(on_read)   # reading from COM port routine
 ui.onB.setDisabled(True)            # disabled button at start
 ui.stbB.setDisabled(True)           # disabled button at start
-ui.OpenB.clicked.connect(on_open)
 ui.offB.clicked.connect(on_off)
 ui.fanB.clicked.connect(on_fan)
 ui.stbB.clicked.connect(on_stb)
