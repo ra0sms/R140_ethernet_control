@@ -10,6 +10,8 @@ ui = uic.loadUi("uploader_design.ui")
 ui.setWindowTitle("Uploader for remote control")
 ui.setWindowIcon(QtGui.QIcon("logo.png"))
 
+SERVER_IP_ADDRESS = ""
+
 serial = QSerialPort()
 timer = QTimer()
 serial.setBaudRate(115200)
@@ -30,12 +32,14 @@ def show_file_messagebox():
 
 
 def read_from_config_file():
+    global SERVER_IP_ADDRESS
     try:
         with open("ip_config.ini", "r") as f:
             text = f.readline()
             text = text.split(sep=":")
             print(text)
             config_ip = text[1].strip().rstrip()
+            SERVER_IP_ADDRESS = config_ip
             print(config_ip)
             ui.configIPL.setText("Config IP address: " + config_ip)
             return True
@@ -73,9 +77,16 @@ def get_ip():
     serial.write(get.encode())
 
 
+def set_ip():
+    set_str = "SET" + SERVER_IP_ADDRESS + "\r"
+    print(set_str)
+    serial.write(set_str.encode())
+
+
 serial.readyRead.connect(on_read)
 ui.openB.clicked.connect(on_open)
 ui.getB.clicked.connect(get_ip)
+ui.setB.clicked.connect(set_ip)
 
 
 ui.show()

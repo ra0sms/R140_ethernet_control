@@ -47,6 +47,7 @@ extern char gw2;
 extern char gw3;
 extern char gw4;
 extern char flag_get_ip;
+extern char flag_set_ip;
 
 /* USER CODE END Includes */
 
@@ -277,6 +278,9 @@ void USART1_IRQHandler(void) {
 		str_rx2[i] = '\r';
 		i = 0;
 		flag_ok = 1;
+		if ((str_rx2[0]=='S')&&(str_rx2[1]=='E')&&(str_rx2[2]=='T')){
+				flag_set_ip = 1;
+				}
 		if ((str_rx2[0]=='G')&&(str_rx2[1]=='E')&&(str_rx2[2]=='T')){
 			flag_get_ip = 1;
 		}

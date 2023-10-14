@@ -50,6 +50,20 @@ char gw2 = 0;
 char gw3 = 0;
 char gw4 = 0;
 char flag_get_ip = 0;
+char flag_set_ip = 0;
+
+uint8_t CDC_Transmit_FS(uint8_t* Buf, uint16_t Len);
+#define HTTP_SOCKET     0
+#define PORT_TCPS		5000
+#define DATA_BUF_SIZE   8196
+char gDATABUF[DATA_BUF_SIZE];
+
+wiz_NetInfo gWIZNETINFO = { .mac = {0x00, 0x08, 0xdc, 0xab, 0xcd, 0xef},
+                            .ip = {192, 168, 0, 230},
+                            .sn = {255, 255, 255, 000},
+                            .gw = {192, 168, 0, 001},
+                            .dns = {8, 8, 8, 8},
+                            .dhcp = NETINFO_STATIC };
 
 
 void USART1_Send (char chr);
@@ -71,6 +85,19 @@ void send_ip_to_uart(){
 	ip4 = ReadFromEEPROM(EEPROM_ADRESS_START+12);
 	sprintf(out, "%d.%d.%d.%d\n\r",ip1,ip2,ip3,ip4);
 	USART1_Send_String(out);
+}
+
+void receive_ip_from_uart(){
+	int ip1=ip2=ip3=ip4=0;
+	sscanf(str_rx2,"SET%d.%d.%d.%d\r", &ip1, &ip2, &ip3, &ip4);
+	gWIZNETINFO.ip[0] = gWIZNETINFO.gw[0] = ip1;
+	gWIZNETINFO.ip[1] = gWIZNETINFO.gw[1] = ip2;
+	gWIZNETINFO.ip[3] = gWIZNETINFO.gw[2] = ip3;
+	gWIZNETINFO.ip[3] = ip4;
+	gWIZNETINFO.gw[3] = 1;
+	WriteToEEPROM(EEPROM_ADRESS_START, gWIZNETINFO);
+	HAL_Delay(200);
+
 }
 
 
@@ -244,18 +271,7 @@ unsigned const char javaScript[] = "<SCRIPT>\n"
 		"</SCRIPT>\n";
 
 
-uint8_t CDC_Transmit_FS(uint8_t* Buf, uint16_t Len);
-#define HTTP_SOCKET     0
-#define PORT_TCPS		5000
-#define DATA_BUF_SIZE   8196
-char gDATABUF[DATA_BUF_SIZE];
 
-wiz_NetInfo gWIZNETINFO = { .mac = {0x00, 0x08, 0xdc, 0xab, 0xcd, 0xef},
-                            .ip = {192, 168, 000, 230},
-                            .sn = {255, 255, 255, 000},
-                            .gw = {192, 168, 000, 001},
-                            .dns = {8, 8, 8, 8},
-                            .dhcp = NETINFO_STATIC };
 
 
 
@@ -464,6 +480,18 @@ void WriteToEEPROM (uint32_t address, wiz_NetInfo value)
      HAL_FLASH_Lock();
 }
 
+void ReadSettingsFromEEPROM() {
+	gWIZNETINFO.ip[0] = ReadFromEEPROM(EEPROM_ADRESS_START);
+	gWIZNETINFO.ip[1] = ReadFromEEPROM(EEPROM_ADRESS_START + 4);
+	gWIZNETINFO.ip[2] = ReadFromEEPROM(EEPROM_ADRESS_START + 8);
+	gWIZNETINFO.ip[3] = ReadFromEEPROM(EEPROM_ADRESS_START + 12);
+
+	gWIZNETINFO.gw[0] = ReadFromEEPROM(EEPROM_ADRESS_START + 16);
+	gWIZNETINFO.gw[1] = ReadFromEEPROM(EEPROM_ADRESS_START + 20);
+	gWIZNETINFO.gw[2] = ReadFromEEPROM(EEPROM_ADRESS_START + 24);
+	gWIZNETINFO.gw[3] = ReadFromEEPROM(EEPROM_ADRESS_START + 28);
+}
+
 uint32_t ReadFromEEPROM (uint32_t address)
 {
   return (*(__IO uint32_t *)address);
@@ -517,30 +545,28 @@ int main(void)
 	HAL_Delay(1);
 	HAL_GPIO_WritePin(SPI_RST_GPIO_Port, SPI_RST_Pin, GPIO_PIN_SET);
 	HAL_Delay(1000);
-
 	reg_wizchip_cs_cbfunc(W5500_Select, W5500_Unselect);
 	reg_wizchip_spi_cbfunc(W5500_ReadByte, W5500_WriteByte);
 	reg_wizchip_spiburst_cbfunc(W5500_ReadBuff, W5500_WriteBuff);
-
 	uint8_t rx_tx_buff_sizes[] = { 2, 2, 2, 2, 2, 2, 2, 2 };
-
 	wizchip_init(rx_tx_buff_sizes, rx_tx_buff_sizes);
+	ReadSettingsFromEEPROM();
+	if (gWIZNETINFO.ip[0] > 254){
+		gWIZNETINFO.ip[0] = 192;
+		gWIZNETINFO.ip[1] = 168;
+		gWIZNETINFO.ip[2] = 0;
+		gWIZNETINFO.ip[3] = 250;
 
-	//WriteToEEPROM(EEPROM_ADRESS_START, gWIZNETINFO);
+		gWIZNETINFO.gw[0] = 192;
+		gWIZNETINFO.gw[1] = 168;
+		gWIZNETINFO.gw[2] = 0;
+		gWIZNETINFO.gw[3] = 1;
+		WriteToEEPROM(EEPROM_ADRESS_START, gWIZNETINFO);
+		HAL_Delay(100);
 
-	/*gWIZNETINFO.ip[0] = ReadFromEEPROM(EEPROM_ADRESS_START);
-	gWIZNETINFO.ip[1] = ReadFromEEPROM(EEPROM_ADRESS_START+4);
-	gWIZNETINFO.ip[2] = ReadFromEEPROM(EEPROM_ADRESS_START+8);
-	gWIZNETINFO.ip[3] = ReadFromEEPROM(EEPROM_ADRESS_START+12);
-
-	gWIZNETINFO.gw[0] = ReadFromEEPROM(EEPROM_ADRESS_START+16);
-	gWIZNETINFO.gw[1] = ReadFromEEPROM(EEPROM_ADRESS_START+20);
-	gWIZNETINFO.gw[2] = ReadFromEEPROM(EEPROM_ADRESS_START+24);
-	gWIZNETINFO.gw[3] = ReadFromEEPROM(EEPROM_ADRESS_START+28);*/
-
+	}
 
 	wizchip_setnetinfo(&gWIZNETINFO);
-
 	ctlnetwork(CN_SET_NETINFO, (void*) &gWIZNETINFO);
 	HAL_Delay(1000);
   /* USER CODE END 2 */
@@ -569,6 +595,10 @@ int main(void)
 			if (flag_get_ip == 1){
 				flag_get_ip = 0;
 				send_ip_to_uart();
+			}
+			if (flag_set_ip == 1){
+				flag_set_ip = 0;
+				receive_ip_from_uart();
 			}
 		}
 		/*UART_Printf("Input connection\r\n");
