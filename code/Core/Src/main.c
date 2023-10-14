@@ -49,15 +49,29 @@ char gw1 = 0;
 char gw2 = 0;
 char gw3 = 0;
 char gw4 = 0;
+char flag_get_ip = 0;
 
 
 void USART1_Send (char chr);
 void USART1_Send_String (char* str);
+uint32_t ReadFromEEPROM (uint32_t address);
+void WriteToEEPROM (uint32_t address, wiz_NetInfo value);
 
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
+
+void send_ip_to_uart(){
+	char ip1=ip2=ip3=ip4=0;
+	char out[17];
+	ip1 = ReadFromEEPROM(EEPROM_ADRESS_START);
+	ip2 = ReadFromEEPROM(EEPROM_ADRESS_START+4);
+	ip3 = ReadFromEEPROM(EEPROM_ADRESS_START+8);
+	ip4 = ReadFromEEPROM(EEPROM_ADRESS_START+12);
+	sprintf(out, "%d.%d.%d.%d\n\r",ip1,ip2,ip3,ip4);
+	USART1_Send_String(out);
+}
 
 
 void Set_outputs (char* str_rx1)
@@ -512,9 +526,9 @@ int main(void)
 
 	wizchip_init(rx_tx_buff_sizes, rx_tx_buff_sizes);
 
-	/*WriteToEEPROM(EEPROM_ADRESS_START, gWIZNETINFO);
+	//WriteToEEPROM(EEPROM_ADRESS_START, gWIZNETINFO);
 
-	gWIZNETINFO.ip[0] = ReadFromEEPROM(EEPROM_ADRESS_START);
+	/*gWIZNETINFO.ip[0] = ReadFromEEPROM(EEPROM_ADRESS_START);
 	gWIZNETINFO.ip[1] = ReadFromEEPROM(EEPROM_ADRESS_START+4);
 	gWIZNETINFO.ip[2] = ReadFromEEPROM(EEPROM_ADRESS_START+8);
 	gWIZNETINFO.ip[3] = ReadFromEEPROM(EEPROM_ADRESS_START+12);
@@ -551,6 +565,10 @@ int main(void)
 				flag_usb = 0;
 				strcpy(post_url,(char *) str_rx2);
 				Set_outputs(str_rx2);
+			}
+			if (flag_get_ip == 1){
+				flag_get_ip = 0;
+				send_ip_to_uart();
 			}
 		}
 		/*UART_Printf("Input connection\r\n");

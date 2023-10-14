@@ -46,6 +46,7 @@ extern char gw1;
 extern char gw2;
 extern char gw3;
 extern char gw4;
+extern char flag_get_ip;
 
 /* USER CODE END Includes */
 
@@ -267,7 +268,6 @@ void USART1_IRQHandler(void) {
 	char letter;
 	static uint8_t i = 0;
 	letter = USART1->DR;
-	flag_usb = 1;
 	if (letter != '\r') {
 		str_rx2[i] = letter;
 		i++;
@@ -277,6 +277,14 @@ void USART1_IRQHandler(void) {
 		str_rx2[i] = '\r';
 		i = 0;
 		flag_ok = 1;
+		if ((str_rx2[0]=='G')&&(str_rx2[1]=='E')&&(str_rx2[2]=='T')){
+			flag_get_ip = 1;
+		}
+
+		if ((str_rx2[0]=='A')&&(str_rx2[1]=='M')&&(str_rx2[2]=='1')){
+			flag_usb = 1;
+				}
+
 		if ((str_rx2[0] == 'I') && (str_rx2[1] == 'P')) {
 			if (str_rx2[2] == '1') {
 				if (str_rx2[3] != ';') {
