@@ -32,10 +32,11 @@ def read_from_config_file():
             SERVER_IP_ADDRESS = text[1].strip().rstrip()
             print(SERVER_IP_ADDRESS)
             ui.labelIP.setText("IP: " + SERVER_IP_ADDRESS)
-            set_output()
+            return True
     except FileNotFoundError:
         show_file_messagebox()
         ui.labelIP.setText("IP: None")
+        return False
 
 
 def connect_to_server(address: str, request: str):
@@ -122,7 +123,8 @@ def on_off():
             ui.stbB.setStyleSheet(grey_button_style)
             ui.onB.setStyleSheet(grey_button_style)
             ui.offB.setStyleSheet(grey_button_style)
-            ui.onB.setDisabled(True)
+            set_all_buttons_disable()
+            ui.connectB.setEnabled(True)
     else:
         show_warning_messagebox()
 
@@ -406,12 +408,52 @@ def on_stbOffB():
         ui.stbOnB.setStyleSheet(grey_button_style)
         set_output()
     else:
+
         show_warning_messagebox()
 
 
-read_from_config_file()
-ui.onB.setDisabled(True)            # disabled button at start
-ui.stbB.setDisabled(True)           # disabled button at start
+def set_all_buttons_disable():
+    ui.fanB.setDisabled(True)
+    ui.offB.setDisabled(True)
+    ui.onB.setDisabled(True)
+    ui.stbB.setDisabled(True)
+    ui.stbOnB.setDisabled(True)
+    ui.stbOffB.setDisabled(True)
+    ui.startB.setDisabled(True)
+    ui.firstB.setDisabled(True)
+    ui.secondB.setDisabled(True)
+    ui.thirdB.setDisabled(True)
+    ui.fourthB.setDisabled(True)
+    ui.fifthB.setDisabled(True)
+    ui.sixthB.setDisabled(True)
+    ui.seventhB.setDisabled(True)
+    ui.eighthB.setDisabled(True)
+
+
+def set_all_buttons_enable():
+    ui.fanB.setEnabled(True)
+    ui.offB.setEnabled(True)
+    ui.stbOnB.setEnabled(True)
+    ui.stbOffB.setEnabled(True)
+    ui.startB.setEnabled(True)
+    ui.firstB.setEnabled(True)
+    ui.secondB.setEnabled(True)
+    ui.thirdB.setEnabled(True)
+    ui.fourthB.setEnabled(True)
+    ui.fifthB.setEnabled(True)
+    ui.sixthB.setEnabled(True)
+    ui.seventhB.setEnabled(True)
+    ui.eighthB.setEnabled(True)
+
+
+def on_connect():
+    if read_from_config_file():
+        if set_output():
+            set_all_buttons_enable()
+            ui.connectB.setDisabled(True)
+
+
+set_all_buttons_disable()
 ui.offB.clicked.connect(on_off)
 ui.fanB.clicked.connect(on_fan)
 ui.stbB.clicked.connect(on_stb)
@@ -427,6 +469,7 @@ ui.eighthB.clicked.connect(on_eightB)
 ui.startB.clicked.connect(on_startB)
 ui.stbOnB.clicked.connect(on_stbOnB)
 ui.stbOffB.clicked.connect(on_stbOffB)
+ui.connectB.clicked.connect(on_connect)
 
 
 ui.show()
