@@ -290,7 +290,7 @@ char msg[10];
 const char http_200_header[] =
         "HTTP/1.0 200 OK\r\n"
         "Content-Type: text/html; charset=windows-1251\r\n"
-        "Server: STM32\r\n"
+		"Server: STM32\r\n"
         "\r\n";
 
 
@@ -304,11 +304,10 @@ const char http_404_header[] =
 char webPage[]="<h1>Start page Remote console</h1>";
 
 char startPage[]=
-		"<h1>Start page Remote console</h1>"
-		"<p><a href='/wifi'>Config the wifi connection</a></p>"
-		"<p><a href='/switch'>Antenna switch</a></p>"
-		"<p><a href='/toggle'>Toggle switch</a></p>"
-		"<p><a href='/label'>Config name of labels</a></p>";
+		"<head><title>Ethernet Remote Console</title></head>"
+		"<h1>Ethernet remote control console</h1>"
+		"<p><a href='https://ra0sms.com/ethernet-remote-control/'>Help information (in Russian)</a></p>"
+		"<p><a href='/status'>Output status</a></p>";
 
 
 void BuildStartPage (char* buf){

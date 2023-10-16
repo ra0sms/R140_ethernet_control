@@ -7730,7 +7730,7 @@ LOAD C:/ST/STM32CubeIDE_1.10.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
                 0x000000000800ec84                . = ALIGN (0x4)
                 0x000000000800ec84                _sidata = LOADADDR (.data)
 
-.data           0x0000000020000000      0x270 load address 0x000000000800ec84
+.data           0x0000000020000000      0x278 load address 0x000000000800ec84
                 0x0000000020000000                . = ALIGN (0x4)
                 0x0000000020000000                _sdata = .
  *(.data)
@@ -7740,188 +7740,189 @@ LOAD C:/ST/STM32CubeIDE_1.10.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
                 0x0000000020000000                gWIZNETINFO
  *fill*         0x0000000020000017        0x1 
  .data.startPage
-                0x0000000020000018       0xde ./Core/Src/main.o
+                0x0000000020000018       0xe4 ./Core/Src/main.o
                 0x0000000020000018                startPage
  .data.sock_any_port
-                0x00000000200000f6        0x2 ./Core/Src/socket.o
+                0x00000000200000fc        0x2 ./Core/Src/socket.o
+ *fill*         0x00000000200000fe        0x2 
  .data.SystemCoreClock
-                0x00000000200000f8        0x4 ./Core/Src/system_stm32f4xx.o
-                0x00000000200000f8                SystemCoreClock
- .data.WIZCHIP  0x00000000200000fc       0x2c ./Core/Src/wizchip_conf.o
-                0x00000000200000fc                WIZCHIP
+                0x0000000020000100        0x4 ./Core/Src/system_stm32f4xx.o
+                0x0000000020000100                SystemCoreClock
+ .data.WIZCHIP  0x0000000020000104       0x2c ./Core/Src/wizchip_conf.o
+                0x0000000020000104                WIZCHIP
  .data.uwTickPrio
-                0x0000000020000128        0x4 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
-                0x0000000020000128                uwTickPrio
+                0x0000000020000130        0x4 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
+                0x0000000020000130                uwTickPrio
  .data.uwTickFreq
-                0x000000002000012c        0x1 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
-                0x000000002000012c                uwTickFreq
- *fill*         0x000000002000012d        0x3 
+                0x0000000020000134        0x1 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
+                0x0000000020000134                uwTickFreq
+ *fill*         0x0000000020000135        0x3 
  .data.USBD_CDC_DeviceQualifierDesc
-                0x0000000020000130        0xa ./Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.o
- *fill*         0x000000002000013a        0x2 
+                0x0000000020000138        0xa ./Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.o
+ *fill*         0x0000000020000142        0x2 
  .data.USBD_CDC
-                0x000000002000013c       0x38 ./Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.o
-                0x000000002000013c                USBD_CDC
+                0x0000000020000144       0x38 ./Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.o
+                0x0000000020000144                USBD_CDC
  .data.USBD_CDC_CfgDesc
-                0x0000000020000174       0x43 ./Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.o
+                0x000000002000017c       0x43 ./Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.o
  .data.CDCInEpAdd
-                0x00000000200001b7        0x1 ./Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.o
+                0x00000000200001bf        0x1 ./Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.o
  .data.CDCOutEpAdd
-                0x00000000200001b8        0x1 ./Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.o
+                0x00000000200001c0        0x1 ./Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.o
  .data.CDCCmdEpAdd
-                0x00000000200001b9        0x1 ./Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.o
- *fill*         0x00000000200001ba        0x2 
+                0x00000000200001c1        0x1 ./Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.o
+ *fill*         0x00000000200001c2        0x2 
  .data.USBD_Interface_fops_FS
-                0x00000000200001bc       0x14 ./USB_DEVICE/App/usbd_cdc_if.o
-                0x00000000200001bc                USBD_Interface_fops_FS
- .data.FS_Desc  0x00000000200001d0       0x1c ./USB_DEVICE/App/usbd_desc.o
-                0x00000000200001d0                FS_Desc
+                0x00000000200001c4       0x14 ./USB_DEVICE/App/usbd_cdc_if.o
+                0x00000000200001c4                USBD_Interface_fops_FS
+ .data.FS_Desc  0x00000000200001d8       0x1c ./USB_DEVICE/App/usbd_desc.o
+                0x00000000200001d8                FS_Desc
  .data.USBD_FS_DeviceDesc
-                0x00000000200001ec       0x12 ./USB_DEVICE/App/usbd_desc.o
-                0x00000000200001ec                USBD_FS_DeviceDesc
- *fill*         0x00000000200001fe        0x2 
+                0x00000000200001f4       0x12 ./USB_DEVICE/App/usbd_desc.o
+                0x00000000200001f4                USBD_FS_DeviceDesc
+ *fill*         0x0000000020000206        0x2 
  .data.USBD_LangIDDesc
-                0x0000000020000200        0x4 ./USB_DEVICE/App/usbd_desc.o
-                0x0000000020000200                USBD_LangIDDesc
+                0x0000000020000208        0x4 ./USB_DEVICE/App/usbd_desc.o
+                0x0000000020000208                USBD_LangIDDesc
  .data.USBD_StringSerial
-                0x0000000020000204       0x1a ./USB_DEVICE/App/usbd_desc.o
-                0x0000000020000204                USBD_StringSerial
- *fill*         0x000000002000021e        0x2 
+                0x000000002000020c       0x1a ./USB_DEVICE/App/usbd_desc.o
+                0x000000002000020c                USBD_StringSerial
+ *fill*         0x0000000020000226        0x2 
  .data._impure_data
-                0x0000000020000220       0x4c C:/ST/STM32CubeIDE_1.10.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.1.202309131626/tools/bin/../lib/gcc/arm-none-eabi/11.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-impure.o)
-                0x0000000020000220                _impure_data
+                0x0000000020000228       0x4c C:/ST/STM32CubeIDE_1.10.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.1.202309131626/tools/bin/../lib/gcc/arm-none-eabi/11.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-impure.o)
+                0x0000000020000228                _impure_data
  .data._impure_ptr
-                0x000000002000026c        0x4 C:/ST/STM32CubeIDE_1.10.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.1.202309131626/tools/bin/../lib/gcc/arm-none-eabi/11.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-impure.o)
-                0x000000002000026c                _impure_ptr
+                0x0000000020000274        0x4 C:/ST/STM32CubeIDE_1.10.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.1.202309131626/tools/bin/../lib/gcc/arm-none-eabi/11.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-impure.o)
+                0x0000000020000274                _impure_ptr
  *(.RamFunc)
  *(.RamFunc*)
-                0x0000000020000270                . = ALIGN (0x4)
-                0x0000000020000270                _edata = .
+                0x0000000020000278                . = ALIGN (0x4)
+                0x0000000020000278                _edata = .
 
-.igot.plt       0x0000000020000270        0x0 load address 0x000000000800eef4
- .igot.plt      0x0000000020000270        0x0 C:/ST/STM32CubeIDE_1.10.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.1.202309131626/tools/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+fp/hard/crtbegin.o
-                0x0000000020000270                . = ALIGN (0x4)
+.igot.plt       0x0000000020000278        0x0 load address 0x000000000800eefc
+ .igot.plt      0x0000000020000278        0x0 C:/ST/STM32CubeIDE_1.10.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.1.202309131626/tools/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+fp/hard/crtbegin.o
+                0x0000000020000278                . = ALIGN (0x4)
 
-.bss            0x0000000020000270     0x36bc load address 0x000000000800eef4
-                0x0000000020000270                _sbss = .
-                0x0000000020000270                __bss_start__ = _sbss
+.bss            0x0000000020000278     0x36bc load address 0x000000000800eefc
+                0x0000000020000278                _sbss = .
+                0x0000000020000278                __bss_start__ = _sbss
  *(.bss)
- .bss           0x0000000020000270       0x1c C:/ST/STM32CubeIDE_1.10.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.1.202309131626/tools/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+fp/hard/crtbegin.o
+ .bss           0x0000000020000278       0x1c C:/ST/STM32CubeIDE_1.10.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.1.202309131626/tools/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7e-m+fp/hard/crtbegin.o
  *(.bss*)
- .bss.str_rx2   0x000000002000028c       0x19 ./Core/Src/main.o
-                0x000000002000028c                str_rx2
- .bss.flag_ok   0x00000000200002a5        0x1 ./Core/Src/main.o
-                0x00000000200002a5                flag_ok
- *fill*         0x00000000200002a6        0x2 
- .bss.out1      0x00000000200002a8        0x8 ./Core/Src/main.o
-                0x00000000200002a8                out1
- .bss.out2      0x00000000200002b0        0x8 ./Core/Src/main.o
-                0x00000000200002b0                out2
- .bss.get_url   0x00000000200002b8        0x4 ./Core/Src/main.o
-                0x00000000200002b8                get_url
- .bss.post_url  0x00000000200002bc       0x19 ./Core/Src/main.o
-                0x00000000200002bc                post_url
- .bss.flag_usb  0x00000000200002d5        0x1 ./Core/Src/main.o
-                0x00000000200002d5                flag_usb
- .bss.ip1       0x00000000200002d6        0x1 ./Core/Src/main.o
-                0x00000000200002d6                ip1
- .bss.ip2       0x00000000200002d7        0x1 ./Core/Src/main.o
-                0x00000000200002d7                ip2
- .bss.ip3       0x00000000200002d8        0x1 ./Core/Src/main.o
-                0x00000000200002d8                ip3
- .bss.ip4       0x00000000200002d9        0x1 ./Core/Src/main.o
-                0x00000000200002d9                ip4
- .bss.gw1       0x00000000200002da        0x1 ./Core/Src/main.o
-                0x00000000200002da                gw1
- .bss.gw2       0x00000000200002db        0x1 ./Core/Src/main.o
-                0x00000000200002db                gw2
- .bss.gw3       0x00000000200002dc        0x1 ./Core/Src/main.o
-                0x00000000200002dc                gw3
- .bss.gw4       0x00000000200002dd        0x1 ./Core/Src/main.o
-                0x00000000200002dd                gw4
+ .bss.str_rx2   0x0000000020000294       0x19 ./Core/Src/main.o
+                0x0000000020000294                str_rx2
+ .bss.flag_ok   0x00000000200002ad        0x1 ./Core/Src/main.o
+                0x00000000200002ad                flag_ok
+ *fill*         0x00000000200002ae        0x2 
+ .bss.out1      0x00000000200002b0        0x8 ./Core/Src/main.o
+                0x00000000200002b0                out1
+ .bss.out2      0x00000000200002b8        0x8 ./Core/Src/main.o
+                0x00000000200002b8                out2
+ .bss.get_url   0x00000000200002c0        0x4 ./Core/Src/main.o
+                0x00000000200002c0                get_url
+ .bss.post_url  0x00000000200002c4       0x19 ./Core/Src/main.o
+                0x00000000200002c4                post_url
+ .bss.flag_usb  0x00000000200002dd        0x1 ./Core/Src/main.o
+                0x00000000200002dd                flag_usb
+ .bss.ip1       0x00000000200002de        0x1 ./Core/Src/main.o
+                0x00000000200002de                ip1
+ .bss.ip2       0x00000000200002df        0x1 ./Core/Src/main.o
+                0x00000000200002df                ip2
+ .bss.ip3       0x00000000200002e0        0x1 ./Core/Src/main.o
+                0x00000000200002e0                ip3
+ .bss.ip4       0x00000000200002e1        0x1 ./Core/Src/main.o
+                0x00000000200002e1                ip4
+ .bss.gw1       0x00000000200002e2        0x1 ./Core/Src/main.o
+                0x00000000200002e2                gw1
+ .bss.gw2       0x00000000200002e3        0x1 ./Core/Src/main.o
+                0x00000000200002e3                gw2
+ .bss.gw3       0x00000000200002e4        0x1 ./Core/Src/main.o
+                0x00000000200002e4                gw3
+ .bss.gw4       0x00000000200002e5        0x1 ./Core/Src/main.o
+                0x00000000200002e5                gw4
  .bss.flag_get_ip
-                0x00000000200002de        0x1 ./Core/Src/main.o
-                0x00000000200002de                flag_get_ip
+                0x00000000200002e6        0x1 ./Core/Src/main.o
+                0x00000000200002e6                flag_get_ip
  .bss.flag_set_ip
-                0x00000000200002df        0x1 ./Core/Src/main.o
-                0x00000000200002df                flag_set_ip
- .bss.gDATABUF  0x00000000200002e0     0x2004 ./Core/Src/main.o
-                0x00000000200002e0                gDATABUF
- .bss.stat      0x00000000200022e4        0x1 ./Core/Src/main.o
-                0x00000000200022e4                stat
- *fill*         0x00000000200022e5        0x3 
- .bss.hspi1     0x00000000200022e8       0x58 ./Core/Src/main.o
-                0x00000000200022e8                hspi1
+                0x00000000200002e7        0x1 ./Core/Src/main.o
+                0x00000000200002e7                flag_set_ip
+ .bss.gDATABUF  0x00000000200002e8     0x2004 ./Core/Src/main.o
+                0x00000000200002e8                gDATABUF
+ .bss.stat      0x00000000200022ec        0x1 ./Core/Src/main.o
+                0x00000000200022ec                stat
+ *fill*         0x00000000200022ed        0x3 
+ .bss.hspi1     0x00000000200022f0       0x58 ./Core/Src/main.o
+                0x00000000200022f0                hspi1
  .bss.sock_io_mode
-                0x0000000020002340        0x2 ./Core/Src/socket.o
+                0x0000000020002348        0x2 ./Core/Src/socket.o
  .bss.sock_is_sending
-                0x0000000020002342        0x2 ./Core/Src/socket.o
+                0x000000002000234a        0x2 ./Core/Src/socket.o
  .bss.sock_remained_size
-                0x0000000020002344       0x10 ./Core/Src/socket.o
+                0x000000002000234c       0x10 ./Core/Src/socket.o
  .bss.sock_pack_info
-                0x0000000020002354        0x8 ./Core/Src/socket.o
-                0x0000000020002354                sock_pack_info
- .bss.htim1     0x000000002000235c       0x48 ./Core/Src/stm32f4xx_hal_timebase_tim.o
-                0x000000002000235c                htim1
- .bss.i.0       0x00000000200023a4        0x1 ./Core/Src/stm32f4xx_it.o
- *fill*         0x00000000200023a5        0x3 
+                0x000000002000235c        0x8 ./Core/Src/socket.o
+                0x000000002000235c                sock_pack_info
+ .bss.htim1     0x0000000020002364       0x48 ./Core/Src/stm32f4xx_hal_timebase_tim.o
+                0x0000000020002364                htim1
+ .bss.i.0       0x00000000200023ac        0x1 ./Core/Src/stm32f4xx_it.o
+ *fill*         0x00000000200023ad        0x3 
  .bss.__sbrk_heap_end
-                0x00000000200023a8        0x4 ./Core/Src/sysmem.o
- .bss._DNS_     0x00000000200023ac        0x4 ./Core/Src/wizchip_conf.o
- .bss._DHCP_    0x00000000200023b0        0x1 ./Core/Src/wizchip_conf.o
- *fill*         0x00000000200023b1        0x3 
- .bss.uwTick    0x00000000200023b4        0x4 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
-                0x00000000200023b4                uwTick
- .bss.pFlash    0x00000000200023b8       0x20 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.o
-                0x00000000200023b8                pFlash
- .bss.cfgidx.0  0x00000000200023d8        0x1 ./Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.o
- *fill*         0x00000000200023d9        0x3 
+                0x00000000200023b0        0x4 ./Core/Src/sysmem.o
+ .bss._DNS_     0x00000000200023b4        0x4 ./Core/Src/wizchip_conf.o
+ .bss._DHCP_    0x00000000200023b8        0x1 ./Core/Src/wizchip_conf.o
+ *fill*         0x00000000200023b9        0x3 
+ .bss.uwTick    0x00000000200023bc        0x4 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
+                0x00000000200023bc                uwTick
+ .bss.pFlash    0x00000000200023c0       0x20 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.o
+                0x00000000200023c0                pFlash
+ .bss.cfgidx.0  0x00000000200023e0        0x1 ./Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.o
+ *fill*         0x00000000200023e1        0x3 
  .bss.hUsbDeviceFS
-                0x00000000200023dc      0x2dc ./USB_DEVICE/App/usb_device.o
-                0x00000000200023dc                hUsbDeviceFS
+                0x00000000200023e4      0x2dc ./USB_DEVICE/App/usb_device.o
+                0x00000000200023e4                hUsbDeviceFS
  .bss.UserRxBufferFS
-                0x00000000200026b8      0x400 ./USB_DEVICE/App/usbd_cdc_if.o
-                0x00000000200026b8                UserRxBufferFS
+                0x00000000200026c0      0x400 ./USB_DEVICE/App/usbd_cdc_if.o
+                0x00000000200026c0                UserRxBufferFS
  .bss.UserTxBufferFS
-                0x0000000020002ab8      0x400 ./USB_DEVICE/App/usbd_cdc_if.o
-                0x0000000020002ab8                UserTxBufferFS
+                0x0000000020002ac0      0x400 ./USB_DEVICE/App/usbd_cdc_if.o
+                0x0000000020002ac0                UserTxBufferFS
  .bss.USBD_StrDesc
-                0x0000000020002eb8      0x200 ./USB_DEVICE/App/usbd_desc.o
-                0x0000000020002eb8                USBD_StrDesc
+                0x0000000020002ec0      0x200 ./USB_DEVICE/App/usbd_desc.o
+                0x0000000020002ec0                USBD_StrDesc
  .bss.hpcd_USB_OTG_FS
-                0x00000000200030b8      0x50c ./USB_DEVICE/Target/usbd_conf.o
-                0x00000000200030b8                hpcd_USB_OTG_FS
- .bss.mem.0     0x00000000200035c4      0x220 ./USB_DEVICE/Target/usbd_conf.o
- .bss.__sf      0x00000000200037e4      0x138 C:/ST/STM32CubeIDE_1.10.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.1.202309131626/tools/bin/../lib/gcc/arm-none-eabi/11.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-findfp.o)
-                0x00000000200037e4                __sf
- .bss.errno     0x000000002000391c        0x4 C:/ST/STM32CubeIDE_1.10.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.1.202309131626/tools/bin/../lib/gcc/arm-none-eabi/11.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-reent.o)
-                0x000000002000391c                errno
+                0x00000000200030c0      0x50c ./USB_DEVICE/Target/usbd_conf.o
+                0x00000000200030c0                hpcd_USB_OTG_FS
+ .bss.mem.0     0x00000000200035cc      0x220 ./USB_DEVICE/Target/usbd_conf.o
+ .bss.__sf      0x00000000200037ec      0x138 C:/ST/STM32CubeIDE_1.10.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.1.202309131626/tools/bin/../lib/gcc/arm-none-eabi/11.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-findfp.o)
+                0x00000000200037ec                __sf
+ .bss.errno     0x0000000020003924        0x4 C:/ST/STM32CubeIDE_1.10.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.1.202309131626/tools/bin/../lib/gcc/arm-none-eabi/11.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-reent.o)
+                0x0000000020003924                errno
  .bss.__lock___malloc_recursive_mutex
-                0x0000000020003920        0x1 C:/ST/STM32CubeIDE_1.10.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.1.202309131626/tools/bin/../lib/gcc/arm-none-eabi/11.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-lock.o)
-                0x0000000020003920                __lock___malloc_recursive_mutex
- *fill*         0x0000000020003921        0x3 
+                0x0000000020003928        0x1 C:/ST/STM32CubeIDE_1.10.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.1.202309131626/tools/bin/../lib/gcc/arm-none-eabi/11.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-lock.o)
+                0x0000000020003928                __lock___malloc_recursive_mutex
+ *fill*         0x0000000020003929        0x3 
  .bss.__malloc_free_list
-                0x0000000020003924        0x4 C:/ST/STM32CubeIDE_1.10.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.1.202309131626/tools/bin/../lib/gcc/arm-none-eabi/11.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-mallocr.o)
-                0x0000000020003924                __malloc_free_list
+                0x000000002000392c        0x4 C:/ST/STM32CubeIDE_1.10.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.1.202309131626/tools/bin/../lib/gcc/arm-none-eabi/11.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-mallocr.o)
+                0x000000002000392c                __malloc_free_list
  .bss.__malloc_sbrk_start
-                0x0000000020003928        0x4 C:/ST/STM32CubeIDE_1.10.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.1.202309131626/tools/bin/../lib/gcc/arm-none-eabi/11.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-mallocr.o)
-                0x0000000020003928                __malloc_sbrk_start
+                0x0000000020003930        0x4 C:/ST/STM32CubeIDE_1.10.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.1.202309131626/tools/bin/../lib/gcc/arm-none-eabi/11.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(libc_a-mallocr.o)
+                0x0000000020003930                __malloc_sbrk_start
  *(COMMON)
-                0x000000002000392c                . = ALIGN (0x4)
-                0x000000002000392c                _ebss = .
-                0x000000002000392c                __bss_end__ = _ebss
+                0x0000000020003934                . = ALIGN (0x4)
+                0x0000000020003934                _ebss = .
+                0x0000000020003934                __bss_end__ = _ebss
 
 ._user_heap_stack
-                0x000000002000392c      0x604 load address 0x000000000800eef4
-                0x0000000020003930                . = ALIGN (0x8)
- *fill*         0x000000002000392c        0x4 
+                0x0000000020003934      0x604 load address 0x000000000800eefc
+                0x0000000020003938                . = ALIGN (0x8)
+ *fill*         0x0000000020003934        0x4 
                 [!provide]                        PROVIDE (end = .)
-                0x0000000020003930                PROVIDE (_end = .)
-                0x0000000020003b30                . = (. + _Min_Heap_Size)
- *fill*         0x0000000020003930      0x200 
-                0x0000000020003f30                . = (. + _Min_Stack_Size)
- *fill*         0x0000000020003b30      0x400 
-                0x0000000020003f30                . = ALIGN (0x8)
+                0x0000000020003938                PROVIDE (_end = .)
+                0x0000000020003b38                . = (. + _Min_Heap_Size)
+ *fill*         0x0000000020003938      0x200 
+                0x0000000020003f38                . = (. + _Min_Stack_Size)
+ *fill*         0x0000000020003b38      0x400 
+                0x0000000020003f38                . = ALIGN (0x8)
 
 /DISCARD/
  libc.a(*)
