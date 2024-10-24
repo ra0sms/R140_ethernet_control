@@ -1,11 +1,9 @@
 <!DOCTYPE CrossStudio_Session_File>
 <session>
  <Bookmarks/>
- <Breakpoints groups="" active_group="Breakpoints"/>
+ <Breakpoints groups="Breakpoints" active_group="Breakpoints"/>
  <ExecutionProfileWindow/>
- <FrameBufferWindow>
-  <FrameBufferWindow bufferHeight="-1" addressSpace="" addressText="" bufferWidth="-1"/>
- </FrameBufferWindow>
+ <FrameBuffer/>
  <Memory1/>
  <Memory2/>
  <Memory3/>
@@ -39,7 +37,7 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="10" y="292" useTextEdit="1" path="Core/Src/main.c" left="0" selected="1" top="264" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="5" y="277" useTextEdit="1" path="Core/Src/main.c" left="0" selected="1" top="223" codecName="Default"/>
  </Files>
  <EMStudioWindow activeProject="w5500_f401" fileDialogDefaultFilter="*" autoConnectTarget="J-Link" buildConfiguration="Debug External" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="C:/Users/ra0sms/Downloads/RaspberryPi_RP2040_Core0/RaspberryPi_RP2040_Core0" debugSearchPath="" autoConnectCapabilities="3199"/>
 </session>
