@@ -68,7 +68,7 @@ main-build: w5500_f401.elf secondary-outputs
 
 # Tool invocations
 w5500_f401.elf w5500_f401.map: $(OBJS) $(USER_OBJS) /home/ra0sms/stm32/stm32f401/W5500/code/STM32F401CCUX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "w5500_f401.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/ra0sms/stm32/stm32f401/W5500/code/STM32F401CCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="w5500_f401.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+	arm-none-eabi-gcc -o "w5500_f401.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/ra0sms/stm32/stm32f401/W5500/code/STM32F401CCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="w5500_f401.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

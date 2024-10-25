@@ -77,8 +77,11 @@ void WriteToEEPROM (uint32_t address, wiz_NetInfo value);
 /* USER CODE BEGIN PTD */
 
 void send_ip_to_uart(){
-	char ip1=ip2=ip3=ip4=0;
-	char out[17];
+	char ip1 = 0;
+	char ip2 = 0;
+	char ip3 = 0;
+	char ip4 = 0;
+	char out[18];
 	ip1 = ReadFromEEPROM(EEPROM_ADRESS_START);
 	ip2 = ReadFromEEPROM(EEPROM_ADRESS_START+4);
 	ip3 = ReadFromEEPROM(EEPROM_ADRESS_START+8);
@@ -88,12 +91,18 @@ void send_ip_to_uart(){
 }
 
 void receive_ip_from_uart(){
-	int ip1=ip2=ip3=ip4=0;
+	int ip1 = 0;
+	int ip2 = 0;
+	int ip3 = 0;
+	int ip4 = 0;
 	sscanf(str_rx2,"SET%d.%d.%d.%d\r", &ip1, &ip2, &ip3, &ip4);
-	gWIZNETINFO.ip[0] = gWIZNETINFO.gw[0] = ip1;
-	gWIZNETINFO.ip[1] = gWIZNETINFO.gw[1] = ip2;
-	gWIZNETINFO.ip[3] = gWIZNETINFO.gw[2] = ip3;
+	gWIZNETINFO.ip[0] = ip1;
+	gWIZNETINFO.ip[1] = ip2;
+	gWIZNETINFO.ip[2] = ip3;
 	gWIZNETINFO.ip[3] = ip4;
+	gWIZNETINFO.gw[0] = ip1;
+	gWIZNETINFO.gw[1] = ip2;
+	gWIZNETINFO.gw[2] = ip3;
 	gWIZNETINFO.gw[3] = 1;
 	WriteToEEPROM(EEPROM_ADRESS_START, gWIZNETINFO);
 	HAL_Delay(200);
